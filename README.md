@@ -49,7 +49,7 @@ The Job Finder Panel will provide:
 3. Optional one-time resume storage through Supabase Storage.
 4. Easy Apply when a stored resume exists.
 5. Manual application flow when no resume is stored.
-6. A mocked dataset of 150 jobs.
+6. A mocked dataset of 240 distinct jobs.
 7. Search by job title.
 8. Filters for experience, salary, date posted, applicant count, location, and work mode.
 9. Pagination at 15 jobs per page.
