@@ -1,0 +1,52 @@
+erDiagram
+    PROFILES ||--o{ APPLICATIONS : submits
+    PROFILES ||--o{ RESUMES : owns
+    COMPANIES ||--o{ JOBS : posts
+    JOBS ||--o{ APPLICATIONS : receives
+
+    PROFILES {
+        uuid id PK
+        text email
+        text full_name
+        text avatar_url
+        text language
+        text theme
+        text bio
+        text[] skills
+    }
+    RESUMES {
+        uuid id PK
+        uuid profile_id FK
+        text file_url
+        boolean easy_apply_enabled
+        timestamp uploaded_at
+    }
+    COMPANIES {
+        uuid id PK
+        text name
+        text logo_url
+        text industry
+        text location
+        text about
+    }
+    JOBS {
+        uuid id PK
+        uuid company_id FK
+        text title
+        text description
+        text[] required_skills
+        int experience_years
+        int salary_min
+        int salary_max
+        text work_mode
+        text location
+        timestamp posted_at
+        int applicants_count
+    }
+    APPLICATIONS {
+        uuid id PK
+        uuid job_id FK
+        uuid profile_id FK
+        text status
+        timestamp applied_at
+    }

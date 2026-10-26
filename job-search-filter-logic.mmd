@@ -1,0 +1,23 @@
+flowchart LR
+    A[Job Finder Home] --> B[Search Box: Job Title]
+    A --> C[Filters Panel]
+    
+    C --> C1[Experience Level]
+    C --> C2[Salary Range]
+    C --> C3[Date Posted]
+    C --> C4[Applicants Count]
+    C --> C5[Location]
+    C --> C6[Work Mode:<br/>Remote/Hybrid/Onsite]
+    
+    B --> D[Query Mock Dataset<br/>200-250 jobs]
+    C1 --> D
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+    C6 --> D
+    
+    D --> E[Paginated Results<br/>15 per page]
+    E --> F[Page 1, 2, 3 ...]
+    F --> G[Click Job Card]
+    G --> H[Job Detail View]

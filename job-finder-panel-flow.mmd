@@ -1,0 +1,43 @@
+flowchart TD
+    A[User Clicks Job Finder Panel] --> B{Has Account?}
+    B -->|No| C[Create Job Hunter Account]
+    B -->|Yes| D[Login to Job Finder Dashboard]
+    
+    C --> E[Upload Profile Picture]
+    E --> F{Resume Storage Choice}
+    
+    F -->|Store Resume Once| G[Redirect to Resume Upload Page]
+    F -->|Apply Manually| H[Skip Resume Storage]
+    
+    G --> I[Resume Stored in Supabase Storage]
+    I --> J[Easy Apply ENABLED]
+    H --> K[Easy Apply DISABLED<br/>Hover: 'No resume stored']
+    
+    J --> D
+    K --> D
+    
+    D --> L[Job Finder Home Page]
+    L --> M[Browse Mocked Jobs - Paginated 15/page]
+    L --> N[Search & Filter Jobs]
+    L --> O[Click Profile Picture]
+    
+    M --> P[Click Job Card]
+    N --> P
+    P --> Q[Job Details Page]
+    Q --> R{Resume Stored?}
+    R -->|Yes| S[Easy Apply Button Active]
+    R -->|No| T[Manual Apply Flow]
+    
+    O --> U[Dropdown Menu]
+    U --> V[Settings]
+    U --> W[Logout]
+    
+    V --> X[Language: Arabic / English]
+    V --> Y[Theme Toggle]
+    V --> Z[Upload / Update Resume]
+    V --> AA[Update Profile]
+    
+    Z --> I
+    AA --> AB[Save to Supabase]
+    X --> AB
+    Y --> AB

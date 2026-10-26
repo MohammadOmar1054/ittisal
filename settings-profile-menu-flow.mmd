@@ -1,0 +1,16 @@
+flowchart TD
+    A[Click Profile Avatar] --> B[Dropdown Menu]
+    B --> C[Settings]
+    B --> D[Logout]
+    
+    C --> E[Settings Page]
+    E --> F[Language Selector<br/>AR / EN]
+    E --> G[Theme Selector<br/>Light / Dark]
+    E --> H[Resume Management<br/>Upload / Replace]
+    E --> I[Update Profile<br/>Name, Bio, Photo, Skills]
+    
+    F --> J[Save to Supabase]
+    G --> J
+    H --> J
+    I --> J
+    J --> K[Apply Changes UI + DB]

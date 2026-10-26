@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant S as Supabase Auth
+    participant DB as Supabase DB
+    participant ST as Supabase Storage
+
+    U->>F: Click "Job Finder"
+    F->>S: Check session
+    alt No session
+        F->>U: Show signup form
+        U->>F: Submit details
+        F->>S: createUser()
+        S-->>F: Session token
+        F->>U: Prompt profile picture
+        U->>F: Upload image
+        F->>ST: Upload avatar
+        ST-->>DB: Store URL
+        F->>U: Resume choice prompt
+        alt Store resume
+            U->>F: Upload resume PDF
+            F->>ST: Upload resume
+            ST-->>DB: Store resume_url + easy_apply=true
+        else Manual apply
+            F->>DB: easy_apply=false
+        end
+    else Session exists
+        F->>DB: Fetch profile
+        DB-->>F: Profile + resume_url
+    end
+    F->>U: Load Job Finder Home
