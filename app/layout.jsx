@@ -4,7 +4,11 @@ import ClientShell from "../components/client-shell";
 export const metadata = {
   title: "ittisal / اتصال — Find your next Gulf opportunity",
   description: "A more human way to find work, hire talent, and invest across the GCC.",
-  icons: { icon: "/favicon.svg" }
+  icons: {
+    icon: "/favicon.png?v=2",
+    shortcut: "/favicon.png?v=2",
+    apple: "/favicon.png?v=2"
+  }
 };
 
 export default function RootLayout({ children }) {

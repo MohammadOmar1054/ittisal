@@ -110,6 +110,7 @@ button, input { font: inherit; }
     border: 1px solid var(--talent-line);
     color: var(--foreground);
   }
+
   .talent-card-grid {
     background-image: linear-gradient(var(--talent-line) 1px, transparent 1px), linear-gradient(90deg, var(--talent-line) 1px, transparent 1px);
     background-size: 30px 30px;

@@ -19,7 +19,9 @@ export default function Navbar() {
     <header className="relative z-30 w-full px-3 pt-3 sm:px-6 sm:pt-5">
       <nav className="glass mx-auto flex w-full items-center justify-between rounded-full px-4 py-3 sm:px-6">
         <Link href="/" className="group flex items-center gap-3" aria-label="ittisal home">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--accent)] text-sm font-black text-[#0b1321]">i</span>
+          <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-[var(--accent)]">
+            <img src="/favicon.png" alt="" className="h-full w-full object-cover" />
+          </span>
           <span className="text-sm font-bold tracking-tight sm:text-base">ittisal <span className="mx-1 text-[var(--accent)]">/</span> اتصال</span>
         </Link>
         <div className="hidden items-center gap-7 text-sm font-semibold text-[var(--muted)] md:flex">
