@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Navbar from "./navbar";
 
 const AppContext = createContext(null);
+const DEFAULT_THEME = "dark";
+const THEME_STORAGE_KEY = "ittisal-theme-v2";
 
 export function useApp() {
   return useContext(AppContext);
@@ -11,18 +13,18 @@ export function useApp() {
 
 export default function ClientShell({ children }) {
   const [language, setLanguage] = useState("en");
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(DEFAULT_THEME);
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("ittisal-language");
-    const savedTheme = window.localStorage.getItem("ittisal-theme");
+    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
     if (savedLanguage) setLanguage(savedLanguage);
     if (savedTheme) setTheme(savedTheme);
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem("ittisal-language", language);
-    window.localStorage.setItem("ittisal-theme", theme);
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language, theme]);
