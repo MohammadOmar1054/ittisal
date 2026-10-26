@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f7f5ef;
+  --foreground: #0b1321;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: #ffffff;
+  --muted: #657083;
+  --line: rgba(11, 19, 33, 0.1);
+  --accent: #ff785a;
+  --accent-soft: #ffe4dc;
+  --secondary: #b8f3d0;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist), Arial, sans-serif;
+  transition: background .4s ease, color .4s ease;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+
+.theme-dark {
+  --background: #08111d;
+  --foreground: #f4f6f2;
+  --surface: rgba(18, 30, 45, .78);
+  --surface-strong: #101f30;
+  --muted: #9eacbd;
+  --line: rgba(255, 255, 255, .12);
+  --accent: #ff9076;
+  --accent-soft: #3a2529;
+  --secondary: #16483b;
+}
+.theme-aurora {
+  --background: #07131d;
+  --foreground: #f4fbf7;
+  --surface: rgba(14, 43, 52, .78);
+  --surface-strong: #102b35;
+  --muted: #9db8b5;
+  --line: rgba(184, 243, 208, .16);
+  --accent: #76e4c0;
+  --accent-soft: #153d3f;
+  --secondary: #1d5e66;
+}
+.theme-nocturne {
+  --background: #100b1b;
+  --foreground: #fbf5ff;
+  --surface: rgba(36, 22, 50, .82);
+  --surface-strong: #261832;
+  --muted: #b7a9c5;
+  --line: rgba(223, 186, 255, .15);
+  --accent: #d7a2ff;
+  --accent-soft: #3a2449;
+  --secondary: #432c69;
+}
+
+@layer components {
+  .glass { background: var(--surface); border: 1px solid var(--line); backdrop-filter: blur(18px); }
+  .eyebrow { color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .button-primary { background: var(--accent); color: #14100e; transition: transform .25s ease, box-shadow .25s ease; }
+  .button-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .button-outline { border: 1px solid var(--line); background: var(--surface); transition: transform .25s ease, border-color .25s ease; }
+  .button-outline:hover { transform: translateY(-2px); border-color: var(--accent); }
+}
