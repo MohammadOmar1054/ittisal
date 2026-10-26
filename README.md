@@ -32,6 +32,9 @@ npm run build
 | --- | --- |
 | `/` | Landing page |
 | `/hunter` | Job hunter login entry |
+| `/hunter/onboarding` | Job hunter account and resume onboarding |
+| `/hunter/jobs/[id]` | Job detail and apply flow |
+| `/hunter/settings` | Job hunter profile settings |
 | `/employers` | Employer login entry |
 | `/investors` | Investor login entry |
 | `/careers` | Careers at ittisal |
@@ -46,7 +49,7 @@ The Job Finder Panel will provide:
 3. Optional one-time resume storage through Supabase Storage.
 4. Easy Apply when a stored resume exists.
 5. Manual application flow when no resume is stored.
-6. A mocked dataset of approximately 200–250 jobs.
+6. A mocked dataset of 150 jobs.
 7. Search by job title.
 8. Filters for experience, salary, date posted, applicant count, location, and work mode.
 9. Pagination at 15 jobs per page.
@@ -72,6 +75,25 @@ The Job Finder Panel data model includes:
 - `APPLICATIONS`
 
 The complete entity relationship diagram is in `supabase-data-model.mmd`. Employer and investor panel requirements will be documented separately when defined.
+
+## Job Finder implementation status
+
+The current frontend prototype includes the complete client flow with local browser persistence:
+
+- Account onboarding and sign-in state
+- Profile setup with age, profile picture, degree, field of study, location, bio, and skills
+- Polished profile picture and resume file pickers
+- Optional resume upload selection
+- Mock GCC job dataset
+- Search by title, skill, or company
+- Work mode, experience, and location filters
+- Paginated results
+- Job detail pages
+- Easy Apply when a resume is stored
+- Manual apply fallback when no resume is stored
+- Profile menu, logout, language, and theme controls
+
+Supabase Auth, Database, and Storage are the next integration boundary; no credentials are committed to this repository.
 
 ## Job Finder Panel diagrams
 
