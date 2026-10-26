@@ -11,7 +11,7 @@ export function useApp() {
 
 export default function ClientShell({ children }) {
   const [language, setLanguage] = useState("en");
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("ittisal-language");
@@ -29,7 +29,7 @@ export default function ClientShell({ children }) {
 
   return (
     <AppContext.Provider value={{ language, setLanguage, theme, setTheme }}>
-      <div className={`min-h-screen ${theme === "dark" ? "theme-dark" : ""} ${theme === "aurora" ? "theme-aurora" : ""} ${theme === "nocturne" ? "theme-nocturne" : ""}`}>
+      <div className={`min-h-screen ${theme === "light" ? "theme-light" : ""} ${theme === "dark" ? "theme-dark" : ""} ${theme === "aurora" ? "theme-aurora" : ""} ${theme === "nocturne" ? "theme-nocturne" : ""}`}>
         <Navbar />
         {children}
       </div>
