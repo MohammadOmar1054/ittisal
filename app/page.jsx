@@ -6,9 +6,9 @@ import AmbientBackground from "../components/ambient-background";
 import { useApp } from "../components/client-shell";
 
 const testimonials = [
-  ["Noura Al-Harbi", "Product designer, Riyadh", "مصممة منتجات، الرياض", "ittisal helped me find a team that sees my potential, not just my CV.", "https://upload.wikimedia.org/wikipedia/commons/5/54/Princess_Reema_Remarks.jpg"],
-  ["Omar Mansour", "Founder, Dubai", "مؤسس، دبي", "We made our first senior hire in two weeks. The quality is remarkable.", "https://upload.wikimedia.org/wikipedia/commons/a/a5/Yasir_Al-Rumayyan_Argentina_v_Spain_19_July_2026-285.jpg"],
-  ["Layla Haddad", "Data analyst, Doha", "محللة بيانات، الدوحة", "A warmer, clearer way to find the right next chapter across the Gulf.", "https://upload.wikimedia.org/wikipedia/commons/d/db/Hayat_Sindi_-_PopTech_2012_-_Camden_Maine_USA_%288103609979%29.jpg"]
+  ["Noura Al-Harbi", "Product designer, Riyadh", "مصممة منتجات، الرياض", "ittisal helped me find a team that sees my potential, not just my CV.", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtEHz7XFA-XJgsQK8m_WlNJDFae7XvhPeTRi-Do4pvNpqGOPklQ41u0Ps&s=10"],
+  ["Omar Mansour", "Founder, Dubai", "مؤسس، دبي", "We made our first senior hire in two weeks. The quality is remarkable.", "https://img.magnific.com/premium-photo/smiling-saudi-man-traditional-attire-portrait_99297-1419.jpg?semt=ais_hybrid&w=740&q=80"],
+  ["Layla Haddad", "Data analyst, Doha", "محللة بيانات، الدوحة", "A warmer, clearer way to find the right next chapter across the Gulf.", "https://campaignme.com/wp-content/uploads/2024/11/1714561839615-e1730443517409.jpeg"]
 ];
 
 export default function Home() {
