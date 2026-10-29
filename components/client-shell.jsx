@@ -45,6 +45,11 @@ export default function ClientShell({ children }) {
   const supabase = createClient();
 
   const loadProfileAndResume = useCallback(async (userId) => {
+    if (!supabase) {
+      setLoadingAuth(false);
+      return;
+    }
+
     try {
       const [profileRes, resumeRes] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
@@ -85,6 +90,13 @@ export default function ClientShell({ children }) {
   // Auth state listener & initial session check
   useEffect(() => {
     let mounted = true;
+
+    if (!supabase) {
+      setLoadingAuth(false);
+      return () => {
+        mounted = false;
+      };
+    }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!mounted) return;
@@ -136,7 +148,7 @@ export default function ClientShell({ children }) {
   }, [user, loadProfileAndResume]);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut();
     setUser(null);
     setSession(null);
     setProfile(null);
