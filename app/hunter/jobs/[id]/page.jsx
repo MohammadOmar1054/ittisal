@@ -5,7 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import AmbientBackground from "../../../../components/ambient-background";
 import { useApp } from "../../../../components/client-shell";
-import { formatSalaryAmount } from "../../../../lib/jobs";
+import { formatSalaryAmount, jobs as localJobs } from "../../../../lib/jobs";
+import { getCompanyLogo } from "../../../../lib/company-logos";
 
 export default function JobDetailsPage() {
   const { id } = useParams();
@@ -29,6 +30,27 @@ export default function JobDetailsPage() {
     async function loadJob() {
       setLoading(true);
       setError(null);
+
+      if (!supabase) {
+        const localJob = localJobs.find((job) => job.id === id) || localJobs[0];
+        if (!isCancelled && localJob) {
+          setJob({
+            ...localJob,
+            description: `Join ${localJob.company} as a ${localJob.title} in ${localJob.location}. Key skills: ${localJob.skills.join(", ")}.`,
+            required_skills: localJob.skills,
+            work_mode: localJob.mode,
+            salary_min: localJob.salaryMin,
+            salary_max: Math.round(localJob.salaryMin * 1.3),
+            currency: localJob.salary.split(" ")[0],
+            applicants_count: localJob.applicants,
+            posted_at: new Date(Date.now() - localJob.days * 24 * 60 * 60 * 1000).toISOString(),
+            company: { name: localJob.company, logo_url: getCompanyLogo(localJob.company), location: localJob.location }
+          });
+        }
+        setLoading(false);
+        return;
+      }
+
       try {
         let req;
         if (isUuid) {
@@ -63,6 +85,8 @@ export default function JobDetailsPage() {
 
   // Check if current user has already applied
   const checkApplication = useCallback(async (jobId, userId) => {
+    if (!supabase) return;
+
     try {
       const { data } = await supabase
         .from("applications")
@@ -93,6 +117,11 @@ export default function JobDetailsPage() {
     }
 
     if (application || applying) return;
+
+    if (!supabase) {
+      setApplyError(ar ? "يرجى إعداد تسجيل الدخول أولاً." : "Please configure sign-in before applying.");
+      return;
+    }
 
     setApplying(true);
     setApplyError("");
@@ -196,8 +225,16 @@ export default function JobDetailsPage() {
         <div className="glass mt-12 rounded-[2rem] p-7 sm:p-10">
           {/* Header */}
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-[var(--accent-soft)] text-xl font-bold text-[var(--accent)]">
-              {(job.company?.name || "GCC").slice(0, 2).toUpperCase()}
+            <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white p-3 text-xl font-bold text-[var(--accent)]">
+              {getCompanyLogo(job.company?.name, job.company?.logo_url) ? (
+                <img
+                  src={getCompanyLogo(job.company?.name, job.company?.logo_url)}
+                  alt={`${job.company?.name || "Company"} logo`}
+                  className="h-full w-full object-contain"
+                />
+              ) : (
+                (job.company?.name || "GCC").slice(0, 2).toUpperCase()
+              )}
             </span>
             <div>
               <p className="eyebrow">

@@ -17,7 +17,13 @@ export default function Navbar() {
   const ar = language === "ar";
   return (
     <header className="relative z-30 w-full px-3 pt-3 sm:px-6 sm:pt-5">
-      <nav className="glass mx-auto flex w-full items-center justify-between rounded-full px-4 py-3 sm:px-6">
+      <nav className="navbar-frame glass relative mx-auto flex w-full items-center justify-between overflow-hidden rounded-xl px-4 py-3 sm:px-6">
+        <motion.div
+          aria-hidden="true"
+          className="navbar-golden-flow"
+          animate={{ backgroundPosition: ["100% 0%", "-100% 0%"] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        />
         <Link href="/" className="group flex items-center gap-3" aria-label="ittisal home">
           <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-[var(--accent)]">
             <img src="/favicon.png" alt="" className="h-full w-full object-cover" />

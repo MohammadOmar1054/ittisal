@@ -3,126 +3,126 @@
 
 -- 1. COMPANIES
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000001', 'Al Futtaim', null, 'Retail & Conglomerate', 'Dubai, UAE', 'Al Futtaim is one of the most progressive regional family business houses headquartered in Dubai.')
+VALUES ('10000000-0000-0000-0000-000000000001', 'Al Futtaim', 'https://www.google.com/s2/favicons?domain=alfuttaim.com&sz=128', 'Retail & Conglomerate', 'Dubai, UAE', 'Al Futtaim is one of the most progressive regional family business houses headquartered in Dubai.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000002', 'STC', null, 'Telecommunications', 'Riyadh, Saudi Arabia', 'STC is a leading telecom and digital solutions provider across the Middle East.')
+VALUES ('10000000-0000-0000-0000-000000000002', 'STC', 'https://www.google.com/s2/favicons?domain=stc.com.sa&sz=128', 'Telecommunications', 'Riyadh, Saudi Arabia', 'STC is a leading telecom and digital solutions provider across the Middle East.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000003', 'Saudi Aramco', null, 'Energy & Petroleum', 'Dhahran, Saudi Arabia', 'Saudi Aramco is a global energy and chemical company driving industrial innovation.')
+VALUES ('10000000-0000-0000-0000-000000000003', 'Saudi Aramco', 'https://www.google.com/s2/favicons?domain=aramco.com&sz=128', 'Energy & Petroleum', 'Dhahran, Saudi Arabia', 'Saudi Aramco is a global energy and chemical company driving industrial innovation.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000004', 'G42', null, 'Artificial Intelligence & Cloud', 'Abu Dhabi, UAE', 'G42 is a leading AI and cloud computing company based in Abu Dhabi.')
+VALUES ('10000000-0000-0000-0000-000000000004', 'G42', 'https://www.google.com/s2/favicons?domain=g42.ai&sz=128', 'Artificial Intelligence & Cloud', 'Abu Dhabi, UAE', 'G42 is a leading AI and cloud computing company based in Abu Dhabi.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000005', 'Qatar Airways', null, 'Aviation & Travel', 'Doha, Qatar', 'Qatar Airways is the national airline of the State of Qatar, known for global connectivity.')
+VALUES ('10000000-0000-0000-0000-000000000005', 'Qatar Airways', 'https://www.google.com/s2/favicons?domain=qatarairways.com&sz=128', 'Aviation & Travel', 'Doha, Qatar', 'Qatar Airways is the national airline of the State of Qatar, known for global connectivity.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000006', 'Emaar', null, 'Real Estate & Hospitality', 'Dubai, UAE', 'Emaar Properties is a pioneer developer shaping urban landscapes in Dubai.')
+VALUES ('10000000-0000-0000-0000-000000000006', 'Emaar', 'https://www.google.com/s2/favicons?domain=emaar.com&sz=128', 'Real Estate & Hospitality', 'Dubai, UAE', 'Emaar Properties is a pioneer developer shaping urban landscapes in Dubai.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000007', 'Careem', null, 'Super-App & Mobility', 'Riyadh, Saudi Arabia', 'Careem simplifies and improves the lives of people through everyday digital services.')
+VALUES ('10000000-0000-0000-0000-000000000007', 'Careem', 'https://www.google.com/s2/favicons?domain=careem.com&sz=128', 'Super-App & Mobility', 'Riyadh, Saudi Arabia', 'Careem simplifies and improves the lives of people through everyday digital services.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000008', 'Talabat', null, 'Food & Q-Commerce', 'Kuwait City, Kuwait', 'Talabat is the leading on-demand food and grocery delivery platform in the region.')
+VALUES ('10000000-0000-0000-0000-000000000008', 'Talabat', 'https://www.google.com/s2/favicons?domain=talabat.com&sz=128', 'Food & Q-Commerce', 'Kuwait City, Kuwait', 'Talabat is the leading on-demand food and grocery delivery platform in the region.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000009', 'Honeywell', null, 'Industrial Technology', 'Manama, Bahrain', 'Honeywell delivers industry-specific solutions including aerospace and building technologies.')
+VALUES ('10000000-0000-0000-0000-000000000009', 'Honeywell', 'https://www.google.com/s2/favicons?domain=honeywell.com&sz=128', 'Industrial Technology', 'Manama, Bahrain', 'Honeywell delivers industry-specific solutions including aerospace and building technologies.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000a', 'Petrofac', null, 'Energy Infrastructure', 'Muscat, Oman', 'Petrofac designs, builds, and maintains critical energy and infrastructure assets.')
+VALUES ('10000000-0000-0000-0000-00000000000a', 'Petrofac', 'https://www.google.com/s2/favicons?domain=petrofac.com&sz=128', 'Energy Infrastructure', 'Muscat, Oman', 'Petrofac designs, builds, and maintains critical energy and infrastructure assets.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000b', 'Mubadala', null, 'Sovereign Investment', 'Abu Dhabi, UAE', 'Mubadala Investment Company invests globally to generate sustainable financial returns.')
+VALUES ('10000000-0000-0000-0000-00000000000b', 'Mubadala', 'https://www.google.com/s2/favicons?domain=mubadala.com&sz=128', 'Sovereign Investment', 'Abu Dhabi, UAE', 'Mubadala Investment Company invests globally to generate sustainable financial returns.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000c', 'Microsoft', null, 'Cloud & Enterprise Software', 'Dubai, UAE', 'Microsoft Middle East empowers organizations to achieve more with intelligent cloud.')
+VALUES ('10000000-0000-0000-0000-00000000000c', 'Microsoft', 'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128', 'Cloud & Enterprise Software', 'Dubai, UAE', 'Microsoft Middle East empowers organizations to achieve more with intelligent cloud.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000d', 'Noon', null, 'E-Commerce', 'Jeddah, Saudi Arabia', 'Noon is the homegrown digital marketplace and logistics network for the Arab world.')
+VALUES ('10000000-0000-0000-0000-00000000000d', 'Noon', 'https://www.google.com/s2/favicons?domain=noon.com&sz=128', 'E-Commerce', 'Jeddah, Saudi Arabia', 'Noon is the homegrown digital marketplace and logistics network for the Arab world.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000e', 'QatarEnergy', null, 'Energy & LNG', 'Doha, Qatar', 'QatarEnergy is the premier integrated energy company responsible for the development of cleaner energy.')
+VALUES ('10000000-0000-0000-0000-00000000000e', 'QatarEnergy', 'https://www.google.com/s2/favicons?domain=qatarenergy.qa&sz=128', 'Energy & LNG', 'Doha, Qatar', 'QatarEnergy is the premier integrated energy company responsible for the development of cleaner energy.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-00000000000f', 'DP World', null, 'Logistics & Supply Chain', 'Dubai, UAE', 'DP World enables global trade flows through smart logistics and terminal operations.')
+VALUES ('10000000-0000-0000-0000-00000000000f', 'DP World', 'https://www.google.com/s2/favicons?domain=dpworld.com&sz=128', 'Logistics & Supply Chain', 'Dubai, UAE', 'DP World enables global trade flows through smart logistics and terminal operations.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000010', 'Zain', null, 'Telecommunications', 'Kuwait City, Kuwait', 'Zain is a leading mobile voice and data services operator across the MENA region.')
+VALUES ('10000000-0000-0000-0000-000000000010', 'Zain', 'https://www.google.com/s2/favicons?domain=zain.com&sz=128', 'Telecommunications', 'Kuwait City, Kuwait', 'Zain is a leading mobile voice and data services operator across the MENA region.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000011', 'Omantel', null, 'Telecommunications', 'Muscat, Oman', 'Omantel is the pioneer provider of integrated telecommunication services in the Sultanate of Oman.')
+VALUES ('10000000-0000-0000-0000-000000000011', 'Omantel', 'https://www.google.com/s2/favicons?domain=omantel.om&sz=128', 'Telecommunications', 'Muscat, Oman', 'Omantel is the pioneer provider of integrated telecommunication services in the Sultanate of Oman.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,
   industry = EXCLUDED.industry,
   about = EXCLUDED.about;
 INSERT INTO public.companies (id, name, logo_url, industry, location, about)
-VALUES ('10000000-0000-0000-0000-000000000012', 'Bahrain Mumtalakat', null, 'Sovereign Wealth', 'Manama, Bahrain', 'Mumtalakat is the sovereign wealth fund of the Kingdom of Bahrain investing locally and internationally.')
+VALUES ('10000000-0000-0000-0000-000000000012', 'Bahrain Mumtalakat', 'https://upload.wikimedia.org/wikipedia/commons/0/04/%D8%B4%D8%B1%D9%83%D8%A9_%D9%85%D9%85%D8%AA%D9%84%D9%83%D8%A7%D8%AA_%D8%A7%D9%84%D9%82%D8%A7%D8%A8%D8%B6%D8%A9.png', 'Sovereign Wealth', 'Manama, Bahrain', 'Mumtalakat is the sovereign wealth fund of the Kingdom of Bahrain investing locally and internationally.')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   location = EXCLUDED.location,

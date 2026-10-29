@@ -6,6 +6,8 @@ import AmbientBackground from "./ambient-background";
 import JobPagination from "./job-pagination";
 import { useApp } from "./client-shell";
 import { formatSalaryAmount, formatPosted } from "../lib/jobs";
+import { jobs as localJobs } from "../lib/jobs";
+import { getCompanyLogo } from "../lib/company-logos";
 
 const translations = {
   en: {
@@ -132,6 +134,7 @@ function Logo({ name }) {
 function JobCard({ job, copy, hasResume, language, isApplied }) {
   const companyName = job.company?.name || "GCC Employer";
   const initials = companyName.slice(0, 2).toUpperCase();
+  const logoUrl = getCompanyLogo(companyName, job.company?.logo_url);
 
   const diffDays = Math.max(
     1,
@@ -153,8 +156,8 @@ function JobCard({ job, copy, hasResume, language, isApplied }) {
       className="glass group block rounded-2xl p-5 transition hover:-translate-y-1 hover:border-[var(--accent)]"
     >
       <div className="flex gap-4">
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[var(--accent-soft)] text-sm font-bold text-[var(--accent)]">
-          {initials}
+        <span className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-white p-2 text-sm font-bold text-[var(--accent)]">
+          {logoUrl ? <img src={logoUrl} alt={`${companyName} logo`} className="h-full w-full object-contain" /> : initials}
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
@@ -236,7 +239,7 @@ export default function JobFinderPanel({ language = "en" }) {
 
   // Fetch applications for current user once (single query)
   const fetchApplications = useCallback(async () => {
-    if (!user?.id) {
+    if (!user?.id || !supabase) {
       setAppliedJobIds(new Set());
       return;
     }
@@ -280,6 +283,8 @@ export default function JobFinderPanel({ language = "en" }) {
   // Load distinct categories from DB once
   useEffect(() => {
     async function loadCategories() {
+      if (!supabase) return;
+
       try {
         const { data } = await supabase
           .from("jobs")
@@ -302,6 +307,44 @@ export default function JobFinderPanel({ language = "en" }) {
     async function fetchJobs() {
       setLoadingJobs(true);
       setError(null);
+
+      if (!supabase) {
+        const q = debouncedQuery.trim().toLowerCase();
+        const filtered = localJobs
+          .filter((job) => {
+            const matchesQuery =
+              !q ||
+              job.title.toLowerCase().includes(q) ||
+              job.company.toLowerCase().includes(q) ||
+              job.skills.some((skill) => skill.toLowerCase().includes(q));
+            const matchesCategory = category === "All" || job.category === category;
+            const matchesMode = mode === "All" || job.mode === mode;
+            const matchesLevel = level === "All" || job.level === level;
+            const matchesLocation = location === "All" || job.location.includes(location);
+            return matchesQuery && matchesCategory && matchesMode && matchesLevel && matchesLocation;
+          })
+          .map((job) => ({
+            ...job,
+            description: `Join ${job.company} as a ${job.title} in ${job.location}. Key skills: ${job.skills.join(", ")}.`,
+            required_skills: job.skills,
+            work_mode: job.mode,
+            salary_min: job.salaryMin,
+            salary_max: Math.round(job.salaryMin * 1.3),
+            currency: job.salary.split(" ")[0],
+            applicants_count: job.applicants,
+            posted_at: new Date(Date.now() - job.days * 24 * 60 * 60 * 1000).toISOString(),
+            company: { name: job.company, logo_url: getCompanyLogo(job.company), location: job.location }
+          }));
+
+        const from = (page - 1) * perPage;
+        if (!isCancelled) {
+          setJobsList(filtered.slice(from, from + perPage));
+          setTotalJobs(filtered.length);
+          setLoadingJobs(false);
+        }
+        return;
+      }
+
       try {
         let req = supabase
           .from("jobs")
