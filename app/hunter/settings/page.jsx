@@ -85,6 +85,12 @@ export default function HunterSettingsPage() {
     setProfileError("");
 
     try {
+      const ageValue = Number(form.age);
+      if (!form.age || !Number.isInteger(ageValue) || ageValue < 18 || ageValue > 100) {
+        setProfileError(ar ? "يجب أن يكون العمر 18 عاماً أو أكثر." : "Age must be 18 or older.");
+        return;
+      }
+
       const skillsArray = form.skills
         .split(",")
         .map((s) => s.trim())
@@ -92,7 +98,7 @@ export default function HunterSettingsPage() {
 
       const updates = {
         full_name: form.full_name.trim(),
-        age: form.age ? parseInt(form.age, 10) : null,
+        age: ageValue,
         degree: form.degree.trim(),
         field_of_study: form.field_of_study.trim(),
         location: form.location.trim(),
@@ -369,6 +375,10 @@ export default function HunterSettingsPage() {
                   type="number"
                   value={form.age}
                   onChange={updateField("age")}
+                  required
+                  min={18}
+                  max={100}
+                  step={1}
                   className="mt-1 w-full rounded-xl border border-[var(--line)] bg-[var(--surface-strong)] px-3 py-2.5 text-sm outline-none focus:border-[var(--accent)]"
                 />
               </label>

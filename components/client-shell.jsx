@@ -15,6 +15,7 @@ export function useApp() {
 export default function ClientShell({ children }) {
   const [language, setLanguageState] = useState("en");
   const [theme, setThemeState] = useState(DEFAULT_THEME);
+  const [mounted, setMounted] = useState(false);
 
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
@@ -29,10 +30,12 @@ export default function ClientShell({ children }) {
     const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
     if (savedLanguage) setLanguageState(savedLanguage);
     if (savedTheme) setThemeState(savedTheme);
+    setMounted(true);
   }, []);
 
   // Sync document language, dir & theme
   useEffect(() => {
+    if (!mounted) return;
     window.localStorage.setItem("ittisal-language", language);
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     document.documentElement.lang = language;
@@ -40,7 +43,7 @@ export default function ClientShell({ children }) {
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.classList.remove("theme-light", "theme-dark", "theme-aurora", "theme-nocturne", "theme-desert");
     document.documentElement.classList.add(`theme-${theme}`);
-  }, [language, theme]);
+  }, [language, theme, mounted]);
 
   const supabase = createClient();
 

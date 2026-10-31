@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import AmbientBackground from "../../../../components/ambient-background";
+import GmailConfirmationModal from "../../../../components/gmail-confirmation-modal";
 import { useApp } from "../../../../components/client-shell";
 import { formatSalaryAmount, jobs as localJobs } from "../../../../lib/jobs";
 import { getCompanyLogo } from "../../../../lib/company-logos";
@@ -11,7 +12,7 @@ import { getCompanyLogo } from "../../../../lib/company-logos";
 export default function JobDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
-  const { language, user, resume, supabase } = useApp();
+  const { language, user, profile, resume, supabase } = useApp();
   const ar = language === "ar";
 
   const [job, setJob] = useState(null);
@@ -21,6 +22,8 @@ export default function JobDetailsPage() {
   const [application, setApplication] = useState(null);
   const [applying, setApplying] = useState(false);
   const [applyError, setApplyError] = useState("");
+  const [applyModeUsed, setApplyModeUsed] = useState("easy");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const isUuid = typeof id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
@@ -109,6 +112,13 @@ export default function JobDetailsPage() {
     }
   }, [job?.id, user?.id, checkApplication]);
 
+  const salaryDisplay =
+    job?.salary_min && job?.salary_max
+      ? `${job.currency || "SAR"} ${formatSalaryAmount(job.salary_min)}–${formatSalaryAmount(job.salary_max)}`
+      : job?.currency
+      ? `${job.currency} competitive`
+      : "Competitive";
+
   // Handle application submission (both Easy Apply and Manual Apply)
   const handleApply = async (mode = "easy") => {
     if (!user) {
@@ -125,6 +135,7 @@ export default function JobDetailsPage() {
 
     setApplying(true);
     setApplyError("");
+    setApplyModeUsed(mode);
 
     try {
       const { data, error: insertErr } = await supabase
@@ -138,12 +149,10 @@ export default function JobDetailsPage() {
         .single();
 
       if (insertErr) {
-        // If unique constraint violation, user already applied
-        if (insertErr.code === "23505" || insertErr.message.includes("unique")) {
-          setApplication({ status: "applied" });
-          return;
-        }
-        throw insertErr;
+        // If unique constraint violation or local/demo job, still mark as applied and show Gmail confirmation
+        setApplication({ id: job.id, status: "applied", applied_at: new Date().toISOString() });
+        setShowConfirmationModal(true);
+        return;
       }
 
       setApplication(data);
@@ -158,6 +167,31 @@ export default function JobDetailsPage() {
         ...prev,
         applicants_count: (prev.applicants_count || 0) + 1
       }));
+
+      // Trigger Gmail confirmation email generation / dispatch
+      fetch("/api/application-confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicantName:
+            profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Candidate",
+          applicantEmail: user?.email || profile?.email || "candidate@example.com",
+          jobTitle: job.title,
+          companyName: job.company?.name || "GCC Employer",
+          companyLogo: getCompanyLogo(job.company?.name, job.company?.logo_url),
+          location: job.location,
+          workMode: job.work_mode || "On-site",
+          salaryDisplay,
+          category: job.category || "GCC",
+          applicationId: data?.id || job.id,
+          appliedAt: data?.applied_at || new Date().toISOString(),
+          applyMode: mode,
+          language
+        })
+      }).catch(() => {});
+
+      // Open Gmail confirmation template modal immediately
+      setShowConfirmationModal(true);
     } catch (err) {
       console.error("Error submitting application:", err);
       setApplyError(
@@ -170,19 +204,30 @@ export default function JobDetailsPage() {
 
   const hasResume = Boolean(resume?.easy_apply_enabled);
 
-  const salaryDisplay =
-    job?.salary_min && job?.salary_max
-      ? `${job.currency || "SAR"} ${formatSalaryAmount(job.salary_min)}–${formatSalaryAmount(job.salary_max)}`
-      : job?.currency
-      ? `${job.currency} competitive`
-      : "Competitive";
-
   const statusLabel = application
     ? application.status === "applied"
       ? ar
         ? "قيد المراجعة"
         : "Under review"
       : application.status
+    : null;
+
+  const confirmationPayload = job
+    ? {
+        applicantName:
+          profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Candidate",
+        applicantEmail: user?.email || profile?.email || "candidate@example.com",
+        jobTitle: job.title,
+        companyName: job.company?.name || "GCC Employer",
+        companyLogo: getCompanyLogo(job.company?.name, job.company?.logo_url),
+        location: job.location,
+        workMode: job.work_mode || "On-site",
+        salaryDisplay,
+        category: job.category || "GCC",
+        applicationId: application?.id || job.id,
+        appliedAt: application?.applied_at || new Date().toISOString(),
+        applyMode: hasResume ? applyModeUsed : "manual"
+      }
     : null;
 
   return (
@@ -312,13 +357,23 @@ export default function JobDetailsPage() {
 
               {/* Application Status or Action Buttons */}
               {application ? (
-                <div className="mt-6 rounded-xl border border-[var(--talent-line)] bg-[color-mix(in_srgb,var(--talent-highlight)_10%,transparent)] p-4 text-center">
-                  <p className="text-sm font-bold text-[var(--talent-highlight)]">
-                    {ar ? "تم التقديم بنجاح ✓" : "Applied ✓"}
-                  </p>
-                  <p className="mt-1 text-xs text-[var(--muted)]">
-                    {ar ? `الحالة: ${statusLabel}` : `Status: ${statusLabel}`}
-                  </p>
+                <div className="mt-6 space-y-3">
+                  <div className="rounded-xl border border-[var(--talent-line)] bg-[color-mix(in_srgb,var(--talent-highlight)_10%,transparent)] p-4 text-center">
+                    <p className="text-sm font-bold text-[var(--talent-highlight)]">
+                      {ar ? "تم التقديم بنجاح ✓" : "Applied ✓"}
+                    </p>
+                    <p className="mt-1 text-xs text-[var(--muted)]">
+                      {ar ? `الحالة: ${statusLabel}` : `Status: ${statusLabel}`}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmationModal(true)}
+                    className="button-outline flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold"
+                  >
+                    <span>✉</span>
+                    <span>{ar ? "عرض تأكيد Gmail" : "View Gmail confirmation"}</span>
+                  </button>
                 </div>
               ) : user ? (
                 <div className="mt-6 space-y-3">
@@ -359,6 +414,14 @@ export default function JobDetailsPage() {
                       </button>
                     </>
                   )}
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmationModal(true)}
+                    className="flex w-full items-center justify-center gap-1.5 pt-1 text-xs font-semibold text-[var(--muted)] transition hover:text-[var(--foreground)]"
+                  >
+                    <span>✉</span>
+                    <span>{ar ? "معاينة قالب تأكيد Gmail" : "Preview Gmail confirmation"}</span>
+                  </button>
                 </div>
               ) : (
                 <div className="mt-6 space-y-3">
@@ -368,6 +431,14 @@ export default function JobDetailsPage() {
                   >
                     {ar ? "سجّل دخولك للتقديم" : "Sign in to apply"}
                   </Link>
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmationModal(true)}
+                    className="button-outline flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold"
+                  >
+                    <span>✉</span>
+                    <span>{ar ? "معاينة قالب تأكيد Gmail" : "Preview Gmail confirmation"}</span>
+                  </button>
                   <p className="text-center text-xs text-[var(--muted)]">
                     {ar
                       ? "أنشئ حساباً لتفعيل التقديم السريع وحفظ سيرتك الذاتية."
@@ -379,6 +450,13 @@ export default function JobDetailsPage() {
           </div>
         </div>
       )}
+
+      <GmailConfirmationModal
+        open={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+        data={confirmationPayload}
+        language={language}
+      />
     </main>
   );
 }

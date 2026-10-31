@@ -31,7 +31,12 @@ export default function PanelLogin({ type, title, arabic, description, bullets, 
         </form>
         <div className="my-6 flex items-center gap-3 text-xs text-[var(--muted)]"><span className="h-px flex-1 bg-[var(--line)]" />or<span className="h-px flex-1 bg-[var(--line)]" /></div>
         <button type="button" className="button-outline w-full rounded-xl py-3 text-sm font-semibold">{ar ? "المتابعة باستخدام Google" : "Continue with Google"}</button>
-        <p className="mt-7 text-center text-sm text-[var(--muted)]">{ar ? "جديد على اتصال؟" : "New to ittisal?"} <button type="button" className="font-bold text-[var(--accent)]">{ar ? "أنشئ حساباً" : "Create an account"}</button></p>
+        <p className="mt-7 text-center text-sm text-[var(--muted)]">
+          {ar ? "جديد على اتصال؟" : "New to ittisal?"}{" "}
+          <Link href="/hunter/onboarding" className="font-bold text-[var(--accent)] hover:underline">
+            {ar ? "أنشئ حساباً" : "Create an account"}
+          </Link>
+        </p>
       </motion.div>
     </div>
   </main>;

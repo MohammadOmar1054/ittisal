@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import AmbientBackground from "../../../components/ambient-background";
 import { useApp } from "../../../components/client-shell";
 
+const MIN_AGE = 18;
+const MAX_AGE = 100;
+
 function FilePicker({ label, hint, accept, file, onChange, icon }) {
   return (
     <label className="group block cursor-pointer rounded-2xl border border-dashed border-[var(--line)] bg-[var(--surface-strong)] p-4 transition hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]">
@@ -106,6 +109,18 @@ export default function HunterOnboardingPage() {
         }
       } else {
         // Sign up validation
+        const ageValue = Number(form.age);
+        if (!form.age || !Number.isInteger(ageValue) || ageValue < MIN_AGE) {
+          throw new Error(
+            ar
+              ? `يجب أن يكون عمرك ${MIN_AGE} عاماً أو أكثر لإنشاء حساب.`
+              : `You must be at least ${MIN_AGE} years old to create an account.`
+          );
+        }
+        if (ageValue > MAX_AGE) {
+          throw new Error(ar ? "يرجى إدخال عمر صحيح." : "Please enter a valid age.");
+        }
+
         if (form.password.length < 6) {
           throw new Error(
             ar
@@ -162,7 +177,7 @@ export default function HunterOnboardingPage() {
           options: {
             data: {
               full_name: form.name.trim(),
-              age: form.age ? parseInt(form.age, 10) : null,
+              age: ageValue,
               degree: form.degree.trim(),
               field_of_study: form.field.trim(),
               location: form.location.trim(),
@@ -367,7 +382,21 @@ export default function HunterOnboardingPage() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label className="block text-sm font-bold">
                       {ar ? "العمر" : "Age"}
-                      {input("age", "26", "number", false)}
+                      <input
+                        required
+                        type="number"
+                        inputMode="numeric"
+                        min={MIN_AGE}
+                        max={MAX_AGE}
+                        step={1}
+                        value={form.age}
+                        onChange={update("age")}
+                        placeholder="26"
+                        className="mt-2 w-full rounded-xl border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-3 outline-none transition focus:border-[var(--accent)]"
+                      />
+                      <span className="mt-1 block text-xs font-normal text-[var(--muted)]">
+                        {ar ? `يجب أن يكون عمرك ${MIN_AGE} عاماً أو أكثر.` : `You must be ${MIN_AGE} or older.`}
+                      </span>
                     </label>
                     <label className="block text-sm font-bold">
                       {ar ? "الموقع" : "Location"}

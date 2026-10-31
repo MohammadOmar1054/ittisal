@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useCallback } from "react";
 import AmbientBackground from "./ambient-background";
+import GmailConfirmationModal from "./gmail-confirmation-modal";
 import JobPagination from "./job-pagination";
 import { useApp } from "./client-shell";
 import { formatSalaryAmount, formatPosted } from "../lib/jobs";
@@ -224,7 +225,7 @@ function JobCard({ job, copy, hasResume, language, isApplied }) {
   );
 }
 
-function AppliedJobCard({ application, copy, language }) {
+function AppliedJobCard({ application, copy, language, onOpenConfirmation }) {
   const job = application.job;
   if (!job) return null;
 
@@ -248,6 +249,22 @@ function AppliedJobCard({ application, copy, language }) {
       {appliedDate && (
         <span className="pointer-events-none absolute bottom-5 left-5 text-[10px] text-[var(--muted)] rtl:left-auto rtl:right-5">
           {copy.appliedOn} {appliedDate}
+        </span>
+      )}
+      {onOpenConfirmation && (
+        <div className="mt-2 flex justify-end">
+          <button
+            type="button"
+            onClick={() => onOpenConfirmation(application)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface-strong)] px-3 py-1 text-[11px] font-bold text-[var(--foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            <span>✉</span>
+            <span>{language === "ar" ? "عرض تأكيد Gmail" : "View Gmail confirmation"}</span>
+          </button>
+        </div>
+      )}
+      {false && (
+        <span>
         </span>
       )}
     </div>
@@ -275,6 +292,7 @@ export default function JobFinderPanel({ language = "en" }) {
   const [appliedJobIds, setAppliedJobIds] = useState(new Set());
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loadingApplied, setLoadingApplied] = useState(false);
+  const [selectedConfirmation, setSelectedConfirmation] = useState(null);
 
   const perPage = 15;
   const listTopRef = useRef(null);
@@ -599,6 +617,30 @@ export default function JobFinderPanel({ language = "en" }) {
                     application={application}
                     copy={copy}
                     language={language}
+                    onOpenConfirmation={(app) => {
+                      const j = app.job || {};
+                      const sal =
+                        j.salary_min && j.salary_max
+                          ? `${j.currency || "SAR"} ${formatSalaryAmount(j.salary_min)}–${formatSalaryAmount(j.salary_max)}`
+                          : j.currency
+                          ? `${j.currency} competitive`
+                          : "Competitive";
+                      setSelectedConfirmation({
+                        applicantName:
+                          profile?.full_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Candidate",
+                        applicantEmail: user?.email || profile?.email || "candidate@example.com",
+                        jobTitle: j.title,
+                        companyName: j.company?.name || "GCC Employer",
+                        companyLogo: getCompanyLogo(j.company?.name, j.company?.logo_url),
+                        location: j.location,
+                        workMode: j.work_mode || "On-site",
+                        salaryDisplay: sal,
+                        category: j.category || "GCC",
+                        applicationId: app.job_id,
+                        appliedAt: app.applied_at,
+                        applyMode: Boolean(resume?.easy_apply_enabled) ? "easy" : "manual"
+                      });
+                    }}
                   />
                 ))}
               </div>
@@ -768,6 +810,15 @@ export default function JobFinderPanel({ language = "en" }) {
         {/* Pagination */}
         {!loadingJobs && !error && totalJobs > perPage && (
           <JobPagination page={page} pages={pages} onPageChange={changePage} labels={copy} />
+        )}
+        <GmailConfirmationModal
+          open={Boolean(selectedConfirmation)}
+          onClose={() => setSelectedConfirmation(null)}
+          data={selectedConfirmation}
+          language={language}
+        />
+        {false && (
+          <span />
         )}
       </div>
     </main>
