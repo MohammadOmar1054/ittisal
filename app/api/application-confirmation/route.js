@@ -8,8 +8,9 @@ export async function POST(request) {
 
     let delivered = false;
     let provider = "template-preview";
+    let dispatchResult = null;
 
-    // Optional live delivery if RESEND_API_KEY is configured in .env.local
+    // Live delivery via Resend if RESEND_API_KEY is configured in .env.local
     if (process.env.RESEND_API_KEY && emailPayload.to) {
       try {
         const res = await fetch("https://api.resend.com/emails", {
@@ -26,12 +27,20 @@ export async function POST(request) {
             text: emailPayload.text
           })
         });
+
+        const resData = await res.json().catch(() => null);
+
         if (res.ok) {
           delivered = true;
           provider = "resend";
+          dispatchResult = resData;
+        } else {
+          console.warn("Resend API warning/error:", resData);
+          dispatchResult = resData;
         }
       } catch (sendErr) {
         console.warn("Email live dispatch skipped:", sendErr);
+        dispatchResult = { error: sendErr?.message };
       }
     }
 
@@ -39,6 +48,7 @@ export async function POST(request) {
       ok: true,
       delivered,
       provider,
+      dispatchResult,
       email: emailPayload
     });
   } catch (err) {
@@ -48,4 +58,3 @@ export async function POST(request) {
     );
   }
 }
-
