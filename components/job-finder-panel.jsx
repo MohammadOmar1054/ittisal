@@ -41,6 +41,11 @@ const translations = {
     loading: "Finding opportunities...",
     emptyTitle: "No matching opportunities",
     emptySub: "Try clearing filters or searching for another title, skill, or company.",
+    appliedTitle: "Your applied jobs",
+    appliedSub: "Keep track of the opportunities already in motion.",
+    appliedEmpty: "You have not applied to any jobs yet.",
+    appliedOn: "Applied",
+    loadingApplied: "Loading your applications...",
     errorTitle: "Unable to load jobs",
     errorSub: "Please check your database connection or try refreshing the page.",
     retry: "Try again"
@@ -76,6 +81,11 @@ const translations = {
     loading: "جارٍ جلب الفرص المتاحة...",
     emptyTitle: "لا توجد فرص مطابقة",
     emptySub: "جرّب مسح الفلاتر أو البحث عن مسمى وظيفي أو مهارة أو شركة أخرى.",
+    appliedTitle: "الوظائف التي تقدمت إليها",
+    appliedSub: "تابع الفرص التي بدأت خطواتها بالفعل.",
+    appliedEmpty: "لم تتقدم إلى أي وظيفة بعد.",
+    appliedOn: "تم التقديم في",
+    loadingApplied: "جارٍ تحميل طلباتك...",
     errorTitle: "تعذر تحميل الوظائف",
     errorSub: "يرجى التحقق من الاتصال بقاعدة البيانات وإعادة المحاولة.",
     retry: "إعادة المحاولة"
@@ -214,6 +224,36 @@ function JobCard({ job, copy, hasResume, language, isApplied }) {
   );
 }
 
+function AppliedJobCard({ application, copy, language }) {
+  const job = application.job;
+  if (!job) return null;
+
+  const appliedDate = application.applied_at
+    ? new Intl.DateTimeFormat(language === "ar" ? "ar" : "en", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }).format(new Date(application.applied_at))
+    : null;
+
+  return (
+    <div className="relative">
+      <JobCard
+        job={job}
+        copy={copy}
+        hasResume
+        language={language}
+        isApplied
+      />
+      {appliedDate && (
+        <span className="pointer-events-none absolute bottom-5 left-5 text-[10px] text-[var(--muted)] rtl:left-auto rtl:right-5">
+          {copy.appliedOn} {appliedDate}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function JobFinderPanel({ language = "en" }) {
   const copy = translations[language] || translations.en;
   const { user, profile, resume, signOut, supabase, loadingAuth } = useApp();
@@ -233,6 +273,8 @@ export default function JobFinderPanel({ language = "en" }) {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState(defaultCategories);
   const [appliedJobIds, setAppliedJobIds] = useState(new Set());
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const [loadingApplied, setLoadingApplied] = useState(false);
 
   const perPage = 15;
   const listTopRef = useRef(null);
@@ -241,19 +283,28 @@ export default function JobFinderPanel({ language = "en" }) {
   const fetchApplications = useCallback(async () => {
     if (!user?.id || !supabase) {
       setAppliedJobIds(new Set());
+      setAppliedJobs([]);
       return;
     }
+    setLoadingApplied(true);
     try {
       const { data, error: appErr } = await supabase
         .from("applications")
-        .select("job_id, status")
+        .select("job_id, status, applied_at, job:jobs(*, company:companies(*))")
         .eq("profile_id", user.id);
 
       if (!appErr && data) {
         setAppliedJobIds(new Set(data.map((app) => app.job_id)));
+        setAppliedJobs(data.filter((application) => application.job));
+      } else if (appErr) {
+        console.error("Error fetching applied jobs:", appErr);
+        setAppliedJobs([]);
       }
     } catch (err) {
       console.error("Error fetching applied jobs:", err);
+      setAppliedJobs([]);
+    } finally {
+      setLoadingApplied(false);
     }
   }, [user?.id, supabase]);
 
@@ -514,6 +565,45 @@ export default function JobFinderPanel({ language = "en" }) {
               {copy.signIn}
             </Link>
           </div>
+        )}
+
+        {user && (
+          <section className="mt-10 rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7">
+            <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+              <div>
+                <p className="eyebrow">{copy.appliedTitle}</p>
+                <p className="mt-2 text-sm text-[var(--muted)]">{copy.appliedSub}</p>
+              </div>
+              {!loadingApplied && appliedJobs.length > 0 && (
+                <span className="text-xs font-bold text-[var(--accent)]">
+                  {appliedJobs.length} {copy.applied.toLowerCase()}
+                </span>
+              )}
+            </div>
+
+            {loadingApplied && (
+              <p className="mt-5 text-sm text-[var(--muted)]">{copy.loadingApplied}</p>
+            )}
+
+            {!loadingApplied && appliedJobs.length === 0 && (
+              <p className="mt-5 rounded-xl border border-dashed border-[var(--line)] p-5 text-sm text-[var(--muted)]">
+                {copy.appliedEmpty}
+              </p>
+            )}
+
+            {!loadingApplied && appliedJobs.length > 0 && (
+              <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                {appliedJobs.map((application) => (
+                  <AppliedJobCard
+                    key={application.job_id}
+                    application={application}
+                    copy={copy}
+                    language={language}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
         )}
 
         {/* Search Bar */}
