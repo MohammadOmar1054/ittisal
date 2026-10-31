@@ -467,7 +467,8 @@ export default function HunterSettingsPage() {
               ["dark", ar ? "بعد العمل (داكن)" : "After hours"],
               ["light", ar ? "ضوء النهار (فاتح)" : "Daylight"],
               ["aurora", ar ? "شفق الخليج" : "Gulf aurora"],
-              ["nocturne", ar ? "نوكتورن (ليلي)" : "Nocturne"]
+              ["nocturne", ar ? "نوكتورن (ليلي)" : "Nocturne"],
+              ["desert", ar ? "رمال الصحراء" : "Desert sand"]
             ].map(([id, name]) => (
               <button
                 key={id}

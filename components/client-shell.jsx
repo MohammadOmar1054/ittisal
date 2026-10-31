@@ -5,8 +5,8 @@ import Navbar from "./navbar";
 import { createClient } from "../lib/supabase/client";
 
 const AppContext = createContext(null);
-const DEFAULT_THEME = "dark";
-const THEME_STORAGE_KEY = "ittisal-theme-v2";
+const DEFAULT_THEME = "desert";
+const THEME_STORAGE_KEY = "ittisal-theme-v4";
 
 export function useApp() {
   return useContext(AppContext);
@@ -38,7 +38,7 @@ export default function ClientShell({ children }) {
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
     document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.classList.remove("theme-light", "theme-dark", "theme-aurora", "theme-nocturne");
+    document.documentElement.classList.remove("theme-light", "theme-dark", "theme-aurora", "theme-nocturne", "theme-desert");
     document.documentElement.classList.add(`theme-${theme}`);
   }, [language, theme]);
 
@@ -172,7 +172,7 @@ export default function ClientShell({ children }) {
       signOut,
       supabase
     }}>
-      <div className={`min-h-screen ${theme === "light" ? "theme-light" : ""} ${theme === "dark" ? "theme-dark" : ""} ${theme === "aurora" ? "theme-aurora" : ""} ${theme === "nocturne" ? "theme-nocturne" : ""}`}>
+      <div className={`min-h-screen ${theme === "light" ? "theme-light" : ""} ${theme === "dark" ? "theme-dark" : ""} ${theme === "aurora" ? "theme-aurora" : ""} ${theme === "nocturne" ? "theme-nocturne" : ""} ${theme === "desert" ? "theme-desert" : ""}`}>
         <Navbar />
         {children}
       </div>

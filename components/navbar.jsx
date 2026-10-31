@@ -17,10 +17,11 @@ export default function Navbar() {
   const ar = language === "ar";
   return (
     <header className="relative z-30 w-full px-3 pt-3 sm:px-6 sm:pt-5">
-      <nav className="navbar-frame glass relative mx-auto flex w-full items-center justify-between overflow-hidden rounded-xl px-4 py-3 sm:px-6">
+      <nav className="navbar-frame navbar-firmament glass relative mx-auto flex w-full items-center justify-between overflow-hidden rounded-xl px-4 py-3 sm:px-6">
         <motion.div
           aria-hidden="true"
           className="navbar-golden-flow"
+          style={{ backgroundPosition: "100% 0%" }}
           animate={{ backgroundPosition: ["100% 0%", "-100% 0%"] }}
           transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
         />
@@ -30,9 +31,9 @@ export default function Navbar() {
           </span>
           <span className="text-sm font-bold tracking-tight sm:text-base">ittisal <span className="mx-1 text-[var(--accent)]">/</span> اتصال</span>
         </Link>
-        <div className="hidden items-center gap-7 text-sm font-semibold text-[var(--muted)] md:flex">
+        <div className="hidden items-center gap-7 text-sm font-semibold md:flex">
           <div className="relative">
-            <button onClick={() => setOpen(!open)} className="flex items-center gap-2 py-2 hover:text-[var(--foreground)]">
+            <button onClick={() => setOpen(!open)} className="flex items-center gap-2 py-2 hover:text-[#0a0f23]">
               {ar ? "تصفح" : "Browse"} <span className={`text-xs transition-transform ${open ? "rotate-180" : ""}`}>⌄</span>
             </button>
             <AnimatePresence>
@@ -44,7 +45,7 @@ export default function Navbar() {
               </motion.div>}
             </AnimatePresence>
           </div>
-          <Link href="/careers" className="hover:text-[var(--foreground)]">{ar ? "الوظائف في اتصال" : "Career at ittisal"}</Link>
+          <Link href="/careers" className="hover:text-[#0a0f23]">{ar ? "الوظائف في اتصال" : "Career at ittisal"}</Link>
           <Link href="/settings" aria-label={ar ? "الإعدادات" : "Settings"} className="grid h-9 w-9 place-items-center rounded-full border border-[var(--line)] text-base transition hover:border-[var(--accent)] hover:text-[var(--accent)]">⚙</Link>
         </div>
         <div className="flex items-center gap-2 md:hidden">

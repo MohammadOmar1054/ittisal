@@ -8,7 +8,8 @@ const themes = [
   { id: "light", name: "Daylight", nameAr: "ضوء النهار", description: "Warm and optimistic", descriptionAr: "دافئ ومتفائل", swatches: ["#f7f5ef", "#ff785a", "#b8f3d0"] },
   { id: "dark", name: "After hours", nameAr: "بعد ساعات العمل", description: "Quiet and focused", descriptionAr: "هادئ ومركّز", swatches: ["#08111d", "#ff9076", "#16483b"] },
   { id: "aurora", name: "Gulf aurora", nameAr: "شفق الخليج", description: "Deep sea energy", descriptionAr: "طاقة البحر العميق", swatches: ["#07131d", "#76e4c0", "#1d5e66"] },
-  { id: "nocturne", name: "Nocturne", nameAr: "ليل", description: "A little mysterious", descriptionAr: "غامض قليلاً", swatches: ["#100b1b", "#d7a2ff", "#432c69"] }
+  { id: "nocturne", name: "Nocturne", nameAr: "ليل", description: "A little mysterious", descriptionAr: "غامض قليلاً", swatches: ["#100b1b", "#d7a2ff", "#432c69"] },
+  { id: "desert", name: "Desert sand", nameAr: "رمال الصحراء", description: "Warm, natural, and timeless", descriptionAr: "دافئ وطبيعي وخالد", swatches: ["#cdb28d", "#b85c38", "#6f7d5d"] }
 ];
 
 export default function SettingsPage() {
