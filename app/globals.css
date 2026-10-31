@@ -388,6 +388,25 @@ html.theme-desert .ambient-glow-secondary {
   background: var(--accent);
 }
 
+.panel-ribbon {
+  position: absolute;
+  right: -25%;
+  top: 1.25rem;
+  width: 150%;
+  padding: .4rem 1rem;
+  color: var(--foreground);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(12deg);
+  white-space: nowrap;
+  opacity: .78;
+  pointer-events: none;
+}
+
 @keyframes testimonial-typewrite {
   from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0 0 0 0); }

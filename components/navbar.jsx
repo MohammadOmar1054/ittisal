@@ -7,8 +7,8 @@ import { useApp } from "./client-shell";
 
 const panels = [
   { href: "/hunter", en: "Job hunter", ar: "باحث عن عمل", note: "Find your next move", noteAr: "اعثر على خطوتك التالية" },
-  { href: "/employers", en: "Hire from ittisal", ar: "التوظيف من اتصال", note: "Meet your next great hire", noteAr: "التقِ بموظفك القادم" },
-  { href: "/investors", en: "Find investors", ar: "ابحث عن مستثمرين", note: "Back the future of work", noteAr: "ادعم مستقبل العمل" }
+  { href: "/employers", en: "Hire from ittisal", ar: "التوظيف من اتصال", note: "Meet your next great hire", noteAr: "التقِ بموظفك القادم", ribbon: "Coming soon" },
+  { href: "/investors", en: "Find investors", ar: "ابحث عن مستثمرين", note: "Back the future of work", noteAr: "ادعم مستقبل العمل", ribbon: "Coming soon" }
 ];
 
 export default function Navbar() {
@@ -41,6 +41,7 @@ export default function Navbar() {
                 {panels.map((panel) => <Link onClick={() => setOpen(false)} href={panel.href} key={panel.href} className="block rounded-xl p-3 transition-colors hover:bg-[var(--accent-soft)]">
                   <span className="block text-sm font-bold text-[var(--foreground)]">{ar ? panel.ar : panel.en}</span>
                   <span className="text-xs font-normal text-[var(--muted)]">{ar ? panel.noteAr : panel.note}</span>
+                  {panel.ribbon && <span className="mt-2 inline-flex rounded-full bg-[var(--accent-soft)] px-2 py-1 text-[10px] font-bold text-[var(--accent)]">{panel.ribbon}</span>}
                 </Link>)}
               </motion.div>}
             </AnimatePresence>
